@@ -46,9 +46,9 @@ export default async function Dashboard() {
 
   // 2. Attendance Calculations
   // Calculate attendance rate for each athlete
-  const athletesWithAttendance = athletes.map(athlete => {
+  const athletesWithAttendance = athletes.map((athlete: any) => {
     const totalDaysRecorded = athlete.attendances.length
-    const daysPresent = athlete.attendances.filter(a => a.isPresent).length
+    const daysPresent = athlete.attendances.filter((a: any) => a.isPresent).length
     const attendanceRate = totalDaysRecorded === 0 ? 0 : Math.round((daysPresent / totalDaysRecorded) * 100)
     return {
       ...athlete,
@@ -79,12 +79,12 @@ export default async function Dashboard() {
   const regulerAtt = getGroupAtt(regulerGroup)
 
   // 4. Top by Weight Class
-  const weightClasses = Array.from(new Set(athletesWithAttendance.map(a => a.weightClass)))
-  const topPerWeightClass = weightClasses.map(wc => {
-    const athletesInClass = athletesWithAttendance.filter(a => a.weightClass === wc)
-    athletesInClass.sort((a, b) => b.overallRating - a.overallRating)
+  const weightClasses = Array.from(new Set(athletesWithAttendance.map((a: any) => a.weightClass)))
+  const topPerWeightClass = weightClasses.map((wc: any) => {
+    const athletesInClass = athletesWithAttendance.filter((a: any) => a.weightClass === wc)
+    athletesInClass.sort((a: any, b: any) => b.overallRating - a.overallRating)
     return athletesInClass[0]
-  }).sort((a, b) => b.overallRating - a.overallRating)
+  }).sort((a: any, b: any) => b.overallRating - a.overallRating)
 
   return (
     <div className="w-full space-y-8 pb-10">
@@ -234,7 +234,7 @@ export default async function Dashboard() {
                 {topPerformers.length === 0 && (
                   <tr><td colSpan={4} className="py-6 text-center text-slate-500">Belum ada data</td></tr>
                 )}
-                {topPerformers.map((athlete, idx) => (
+                {topPerformers.map((athlete: any, idx: number) => (
                   <tr key={athlete.id} className="hover:bg-slate-700/20 transition-colors">
                     <td className="py-3 px-5">
                       <div className="flex items-center gap-3">
@@ -283,7 +283,7 @@ export default async function Dashboard() {
                 {topAttendees.length === 0 && (
                   <tr><td colSpan={3} className="py-6 text-center text-slate-500">Belum ada data absen</td></tr>
                 )}
-                {topAttendees.map((athlete, idx) => (
+                {topAttendees.map((athlete: any, idx: number) => (
                   <tr key={athlete.id} className="hover:bg-slate-700/20 transition-colors">
                     <td className="py-3 px-5">
                       <div className="flex items-center gap-3">
@@ -336,7 +336,7 @@ export default async function Dashboard() {
                 {topPerWeightClass.length === 0 && (
                   <tr><td colSpan={5} className="py-6 text-center text-slate-500">Belum ada data</td></tr>
                 )}
-                {topPerWeightClass.map((athlete) => (
+                {topPerWeightClass.map((athlete: any) => (
                   <tr key={athlete.id} className="hover:bg-slate-700/20 transition-colors">
                     <td className="py-3 px-5 font-bold text-purple-400">{athlete.weightClass}</td>
                     <td className="py-3 px-5 font-bold text-slate-200">{athlete.name}</td>

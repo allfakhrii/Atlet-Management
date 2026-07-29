@@ -61,7 +61,7 @@ export default async function AthletesDirectory() {
                   </td>
                 </tr>
               )}
-              {athletes.map((athlete) => (
+              {athletes.map((athlete: any) => (
                 <tr key={athlete.id} className="hover:bg-slate-800/30 transition-colors">
                   <td className="py-4 px-6">
                     <div className="flex items-center gap-3">
