@@ -1,0 +1,65 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Athlete {
+  id            String   @id @default(uuid())
+  name          String
+  age           Int
+  weightClass   String
+  overallRating Int
+  status        String
+  createdAt     DateTime @default(now())
+
+  physicalMetrics PhysicalMetric[]
+  combatStats     CombatStat?
+  radarAttributes RadarAttribute?
+
+  @@map("athletes")
+}
+
+model PhysicalMetric {
+  id          String   @id @default(uuid())
+  athleteId   String
+  athlete     Athlete  @relation(fields: [athleteId], references: [id], onDelete: Cascade)
+  date        String
+  bpm         Int
+  runningPace Float
+  impactForce Float
+  restHours   Float
+  createdAt   DateTime @default(now())
+
+  @@map("physical_metrics")
+}
+
+model CombatStat {
+  id              String  @id @default(uuid())
+  athleteId       String  @unique
+  athlete         Athlete @relation(fields: [athleteId], references: [id], onDelete: Cascade)
+  matchesPlayed   Int     @default(0)
+  headshotAcc     Float
+  bodyKickAcc     Float
+  blockPercentage Float
+  fouls           Int     @default(0)
+  totalPoints     Int     @default(0)
+
+  @@map("combat_stats")
+}
+
+model RadarAttribute {
+  id        String  @id @default(uuid())
+  athleteId String  @unique
+  athlete   Athlete @relation(fields: [athleteId], references: [id], onDelete: Cascade)
+  power     Int
+  speed     Int
+  stamina   Int
+  agility   Int
+  technique Int
+  defense   Int
+
+  @@map("radar_attributes")
+}

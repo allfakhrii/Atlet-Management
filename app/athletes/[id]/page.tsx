@@ -1,11 +1,21 @@
+import prisma from '@/lib/prisma'
 import AthleteProfile from '@/components/athletes/AthleteProfile'
+import { notFound } from 'next/navigation'
 
-export default function AthletePage({ params }: { params: { id: string } }) {
-  // Dalam implementasi nyata, kita akan mengambil data dari Supabase di sini:
-  // const supabase = createClient()
-  // const { data } = await supabase.from('athletes').select('...').eq('id', params.id).single()
-  
-  // Untuk saat ini, kita mengandalkan dummy data di AthleteProfile
+export default async function AthletePage({ params }: { params: { id: string } }) {
+  const athlete = await prisma.athlete.findUnique({
+    where: { id: params.id },
+    include: {
+      radarAttributes: true,
+      combatStats: true,
+      physicalMetrics: {
+        orderBy: { createdAt: 'asc' }
+      }
+    }
+  })
+
+  if (!athlete) return notFound()
+
   return (
     <div className="w-full">
       <div className="mb-6">
@@ -13,7 +23,7 @@ export default function AthletePage({ params }: { params: { id: string } }) {
           ← Back to Dashboard
         </button>
       </div>
-      <AthleteProfile />
+      <AthleteProfile data={athlete} />
     </div>
   )
 }
