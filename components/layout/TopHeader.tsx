@@ -1,6 +1,6 @@
 import { Bell, Search } from 'lucide-react'
 import { getServerSession } from 'next-auth'
-import { authOptions } from '@/app/api/auth/[...nextauth]/route'
+import { authOptions } from "@/lib/auth"
 import MobileNav from './MobileNav'
 
 export default async function TopHeader() {

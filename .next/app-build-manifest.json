@@ -1,30 +1,100 @@
 {
   "pages": {
-    "/(dashboard)/athletes/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/(dashboard)/athletes/page.js"
-    ],
-    "/(dashboard)/layout": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/(dashboard)/layout.js"
+    "/_not-found/page": [
+      "static/chunks/webpack-a851adf59d5ad7f3.js",
+      "static/chunks/fd9d1056-28fb0558dc80ea63.js",
+      "static/chunks/117-6de483dec2eb302f.js",
+      "static/chunks/main-app-47cfb8ba8e907e34.js",
+      "static/chunks/app/_not-found/page-10fc0b4145f77b54.js"
     ],
     "/layout": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/css/app/layout.css",
-      "static/chunks/app/layout.js"
+      "static/chunks/webpack-a851adf59d5ad7f3.js",
+      "static/chunks/fd9d1056-28fb0558dc80ea63.js",
+      "static/chunks/117-6de483dec2eb302f.js",
+      "static/chunks/main-app-47cfb8ba8e907e34.js",
+      "static/css/4abc539393428108.css",
+      "static/chunks/app/layout-ce06e84e9b67fa69.js"
+    ],
+    "/(auth)/login/page": [
+      "static/chunks/webpack-a851adf59d5ad7f3.js",
+      "static/chunks/fd9d1056-28fb0558dc80ea63.js",
+      "static/chunks/117-6de483dec2eb302f.js",
+      "static/chunks/main-app-47cfb8ba8e907e34.js",
+      "static/chunks/972-da3335ad1d68e74b.js",
+      "static/chunks/276-2e51a08a8982049f.js",
+      "static/chunks/app/(auth)/login/page-cf6b342439d8f977.js"
+    ],
+    "/(auth)/register/page": [
+      "static/chunks/webpack-a851adf59d5ad7f3.js",
+      "static/chunks/fd9d1056-28fb0558dc80ea63.js",
+      "static/chunks/117-6de483dec2eb302f.js",
+      "static/chunks/main-app-47cfb8ba8e907e34.js",
+      "static/chunks/972-da3335ad1d68e74b.js",
+      "static/chunks/app/(auth)/register/page-ddd8346033add71e.js"
     ],
     "/(dashboard)/athletes/[id]/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/(dashboard)/athletes/[id]/page.js"
+      "static/chunks/webpack-a851adf59d5ad7f3.js",
+      "static/chunks/fd9d1056-28fb0558dc80ea63.js",
+      "static/chunks/117-6de483dec2eb302f.js",
+      "static/chunks/main-app-47cfb8ba8e907e34.js",
+      "static/chunks/2f0b94e8-8a282444872ce149.js",
+      "static/chunks/164f4fb6-b47a66d4ee6b5dd7.js",
+      "static/chunks/ad2866b8-1b5280da7a09469f.js",
+      "static/chunks/653-163a25d7e6f56758.js",
+      "static/chunks/app/(dashboard)/athletes/[id]/page-28aa63a11bb36c54.js"
+    ],
+    "/(dashboard)/layout": [
+      "static/chunks/webpack-a851adf59d5ad7f3.js",
+      "static/chunks/fd9d1056-28fb0558dc80ea63.js",
+      "static/chunks/117-6de483dec2eb302f.js",
+      "static/chunks/main-app-47cfb8ba8e907e34.js",
+      "static/chunks/972-da3335ad1d68e74b.js",
+      "static/chunks/276-2e51a08a8982049f.js",
+      "static/chunks/app/(dashboard)/layout-5e567a1d6baa7006.js"
+    ],
+    "/(dashboard)/missions/page": [
+      "static/chunks/webpack-a851adf59d5ad7f3.js",
+      "static/chunks/fd9d1056-28fb0558dc80ea63.js",
+      "static/chunks/117-6de483dec2eb302f.js",
+      "static/chunks/main-app-47cfb8ba8e907e34.js",
+      "static/chunks/app/(dashboard)/missions/page-3dfba5193b937069.js"
+    ],
+    "/(dashboard)/approvals/page": [
+      "static/chunks/webpack-a851adf59d5ad7f3.js",
+      "static/chunks/fd9d1056-28fb0558dc80ea63.js",
+      "static/chunks/117-6de483dec2eb302f.js",
+      "static/chunks/main-app-47cfb8ba8e907e34.js",
+      "static/chunks/app/(dashboard)/approvals/page-e8ea4262d304aa38.js"
+    ],
+    "/(dashboard)/athletes/page": [
+      "static/chunks/webpack-a851adf59d5ad7f3.js",
+      "static/chunks/fd9d1056-28fb0558dc80ea63.js",
+      "static/chunks/117-6de483dec2eb302f.js",
+      "static/chunks/main-app-47cfb8ba8e907e34.js",
+      "static/chunks/972-da3335ad1d68e74b.js",
+      "static/chunks/app/(dashboard)/athletes/page-5d35f4109f7ed583.js"
+    ],
+    "/(dashboard)/attendance/page": [
+      "static/chunks/webpack-a851adf59d5ad7f3.js",
+      "static/chunks/fd9d1056-28fb0558dc80ea63.js",
+      "static/chunks/117-6de483dec2eb302f.js",
+      "static/chunks/main-app-47cfb8ba8e907e34.js",
+      "static/chunks/app/(dashboard)/attendance/page-992a056548cf0bfb.js"
+    ],
+    "/(dashboard)/training-logs/page": [
+      "static/chunks/webpack-a851adf59d5ad7f3.js",
+      "static/chunks/fd9d1056-28fb0558dc80ea63.js",
+      "static/chunks/117-6de483dec2eb302f.js",
+      "static/chunks/main-app-47cfb8ba8e907e34.js",
+      "static/chunks/app/(dashboard)/training-logs/page-afb88cfab409c6bb.js"
     ],
     "/(dashboard)/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/(dashboard)/page.js"
+      "static/chunks/webpack-a851adf59d5ad7f3.js",
+      "static/chunks/fd9d1056-28fb0558dc80ea63.js",
+      "static/chunks/117-6de483dec2eb302f.js",
+      "static/chunks/main-app-47cfb8ba8e907e34.js",
+      "static/chunks/972-da3335ad1d68e74b.js",
+      "static/chunks/app/(dashboard)/page-623d559c12820fd5.js"
     ]
   }
 }

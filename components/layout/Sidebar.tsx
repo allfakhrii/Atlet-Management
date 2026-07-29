@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { LayoutDashboard, Users, Activity, Settings, Dumbbell, ShieldCheck } from 'lucide-react'
 import LogoutButton from '../auth/LogoutButton'
 import { getServerSession } from 'next-auth'
-import { authOptions } from '@/app/api/auth/[...nextauth]/route'
+import { authOptions } from "@/lib/auth"
 import SidebarNav from './SidebarNav'
 
 export default async function Sidebar() {
