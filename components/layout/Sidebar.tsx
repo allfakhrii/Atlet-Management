@@ -1,7 +1,14 @@
 import Link from 'next/link'
-import { LayoutDashboard, Users, Activity, Settings, Dumbbell } from 'lucide-react'
+import { LayoutDashboard, Users, Activity, Settings, Dumbbell, ShieldCheck } from 'lucide-react'
+import LogoutButton from '../auth/LogoutButton'
+import { getServerSession } from 'next-auth'
+import { authOptions } from '@/app/api/auth/[...nextauth]/route'
+import SidebarNav from './SidebarNav'
 
-export default function Sidebar() {
+export default async function Sidebar() {
+  const session = await getServerSession(authOptions)
+  const role = (session?.user as any)?.role || "ATHLETE"
+
   return (
     <div className="w-64 bg-slate-900 border-r border-slate-800 hidden md:flex flex-col h-screen">
       <div className="p-6 flex items-center gap-3 border-b border-slate-800">
@@ -9,30 +16,20 @@ export default function Sidebar() {
           <Dumbbell className="w-5 h-5 text-white" />
         </div>
         <h1 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-blue-500">
-          Coach Hub
+          {role === "ADMIN" ? "Coach Hub" : "Athlete Hub"}
         </h1>
       </div>
       
-      <nav className="flex-1 p-4 space-y-2 overflow-y-auto">
-        <Link href="/" className="flex items-center gap-3 px-4 py-3 bg-slate-800/50 text-cyan-400 rounded-xl transition-colors border border-slate-700/50">
-          <LayoutDashboard className="w-5 h-5" />
-          <span className="font-medium">Overview</span>
-        </Link>
-        <Link href="/athletes/dummy" className="flex items-center gap-3 px-4 py-3 text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 rounded-xl transition-colors">
-          <Users className="w-5 h-5" />
-          <span className="font-medium">Athletes Profile</span>
-        </Link>
-        <Link href="#" className="flex items-center gap-3 px-4 py-3 text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 rounded-xl transition-colors">
-          <Activity className="w-5 h-5" />
-          <span className="font-medium">Training Logs</span>
-        </Link>
-      </nav>
+      <SidebarNav role={role} />
 
-      <div className="p-4 border-t border-slate-800">
-        <Link href="#" className="flex items-center gap-3 px-4 py-3 text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 rounded-xl transition-colors">
-          <Settings className="w-5 h-5" />
-          <span className="font-medium">Settings</span>
-        </Link>
+      <div className="p-4 border-t border-slate-800 space-y-2">
+        {role === "ADMIN" && (
+          <Link href="#" className="flex items-center gap-3 px-4 py-3 text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 rounded-xl transition-colors">
+            <Settings className="w-5 h-5" />
+            <span className="font-medium">Settings</span>
+          </Link>
+        )}
+        <LogoutButton />
       </div>
     </div>
   )

@@ -6,11 +6,31 @@ datasource db {
   provider = "postgresql"
 }
 
+enum Role {
+  ADMIN
+  ATHLETE
+}
+
+model User {
+  id         String   @id @default(uuid())
+  name       String
+  email      String   @unique
+  password   String
+  role       Role     @default(ATHLETE)
+  isApproved Boolean  @default(false)
+  athleteId  String?  @unique
+  athlete    Athlete? @relation(fields: [athleteId], references: [id], onDelete: Cascade)
+  createdAt  DateTime @default(now())
+
+  @@map("users")
+}
+
 model Athlete {
   id            String   @id @default(uuid())
   name          String
   age           Int
   weightClass   String
+  classGroup    String   @default("Reguler")
   overallRating Int
   status        String
   createdAt     DateTime @default(now())
@@ -18,6 +38,9 @@ model Athlete {
   physicalMetrics PhysicalMetric[]
   combatStats     CombatStat?
   radarAttributes RadarAttribute?
+  user            User?
+  missions        MissionProgress[]
+  attendances     Attendance[]
 
   @@map("athletes")
 }
@@ -62,4 +85,44 @@ model RadarAttribute {
   defense   Int
 
   @@map("radar_attributes")
+}
+
+model Mission {
+  id          String   @id @default(uuid())
+  title       String
+  description String
+  targetDate  DateTime
+  createdAt   DateTime @default(now())
+  
+  progress    MissionProgress[]
+
+  @@map("missions")
+}
+
+model MissionProgress {
+  id          String   @id @default(uuid())
+  missionId   String
+  athleteId   String
+  isDone      Boolean  @default(false)
+  resultNote  String?  @db.Text
+  completedAt DateTime?
+  
+  mission     Mission  @relation(fields: [missionId], references: [id], onDelete: Cascade)
+  athlete     Athlete  @relation(fields: [athleteId], references: [id], onDelete: Cascade)
+
+  @@unique([missionId, athleteId])
+  @@map("mission_progress")
+}
+
+model Attendance {
+  id        String   @id @default(uuid())
+  athleteId String
+  date      String   // Format YYYY-MM-DD
+  isPresent Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  athlete   Athlete  @relation(fields: [athleteId], references: [id], onDelete: Cascade)
+  
+  @@unique([athleteId, date])
+  @@map("attendance")
 }

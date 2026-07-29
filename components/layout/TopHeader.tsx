@@ -1,6 +1,19 @@
 import { Bell, Search } from 'lucide-react'
+import { getServerSession } from 'next-auth'
+import { authOptions } from '@/app/api/auth/[...nextauth]/route'
 
-export default function TopHeader() {
+export default async function TopHeader() {
+  const session = await getServerSession(authOptions)
+  const name = session?.user?.name || "Unknown User"
+  const role = (session?.user as any)?.role || "ATHLETE"
+  
+  // Get initials (e.g., Fatih Al-Fakhri -> FA)
+  const getInitials = (name: string) => {
+    const parts = name.split(' ')
+    if (parts.length >= 2) return `${parts[0][0]}${parts[1][0]}`.toUpperCase()
+    return name.substring(0, 2).toUpperCase()
+  }
+
   return (
     <header className="h-20 bg-slate-900 border-b border-slate-800 flex items-center justify-between px-8 shrink-0">
       <div className="flex-1 flex items-center">
@@ -20,11 +33,11 @@ export default function TopHeader() {
         </button>
         <div className="flex items-center gap-3 pl-6 border-l border-slate-800">
           <div className="text-right">
-            <p className="text-sm font-semibold text-slate-200">Coach Rizal</p>
-            <p className="text-xs text-slate-500">Head Coach</p>
+            <p className="text-sm font-semibold text-slate-200">{name}</p>
+            <p className="text-xs text-slate-500">{role === "ADMIN" ? "Head Coach" : "Athlete"}</p>
           </div>
           <div className="w-10 h-10 rounded-full bg-slate-700 border-2 border-slate-600 flex items-center justify-center font-bold text-slate-300">
-            CR
+            {getInitials(name)}
           </div>
         </div>
       </div>
