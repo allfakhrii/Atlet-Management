@@ -29,8 +29,10 @@ model Athlete {
   id            String   @id @default(uuid())
   name          String
   age           Int
+  dateOfBirth   DateTime?
   weightClass   String
   classGroup    String   @default("Reguler")
+  belt          String   @default("Putih")
   overallRating Int
   status        String
   createdAt     DateTime @default(now())

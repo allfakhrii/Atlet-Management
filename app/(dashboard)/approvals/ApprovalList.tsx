@@ -26,6 +26,27 @@ export default function ApprovalList({ initialUsers }: { initialUsers: any[] }) 
     }
   }
 
+  const handleReject = async (userId: string) => {
+    if (!confirm("Yakin ingin menolak pendaftaran ini? Data atlet akan dihapus permanen.")) return;
+    
+    setLoading(userId)
+    try {
+      const res = await fetch("/api/approvals", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId }),
+      })
+      
+      if (res.ok) {
+        setUsers(users.filter(u => u.id !== userId))
+      }
+    } catch (error) {
+      console.error(error)
+    } finally {
+      setLoading(null)
+    }
+  }
+
   if (users.length === 0) {
     return (
       <div className="bg-slate-800 p-8 rounded-2xl border border-slate-700/60 text-center">
@@ -57,13 +78,22 @@ export default function ApprovalList({ initialUsers }: { initialUsers: any[] }) 
                 <td className="py-4 px-6 text-slate-400">{user.athlete?.age || "-"}</td>
                 <td className="py-4 px-6 text-slate-400">{user.athlete?.weightClass || "-"}</td>
                 <td className="py-4 px-6 text-right">
-                  <button 
-                    onClick={() => handleApprove(user.id)}
-                    disabled={loading === user.id}
-                    className="text-sm font-medium bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded-lg transition-colors disabled:opacity-50"
-                  >
-                    {loading === user.id ? "Memproses..." : "Setujui (ACC)"}
-                  </button>
+                  <div className="flex items-center justify-end gap-2">
+                    <button 
+                      onClick={() => handleReject(user.id)}
+                      disabled={loading === user.id}
+                      className="text-sm font-bold bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 px-4 py-2 rounded-lg transition-colors border border-rose-500/20 disabled:opacity-50"
+                    >
+                      {loading === user.id ? "Memproses..." : "Tolak"}
+                    </button>
+                    <button 
+                      onClick={() => handleApprove(user.id)}
+                      disabled={loading === user.id}
+                      className="text-sm font-bold bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded-lg transition-colors disabled:opacity-50 shadow-lg shadow-emerald-600/20"
+                    >
+                      {loading === user.id ? "Memproses..." : "Terima (ACC)"}
+                    </button>
+                  </div>
                 </td>
               </tr>
             ))}

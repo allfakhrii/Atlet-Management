@@ -8,7 +8,7 @@ const ADMIN_SECRET = "COACHRIZAL2026"
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json()
-    const { name, email, password, role, secretCode, weightClass, classGroup, age } = body
+    const { name, email, password, role, secretCode, weightClass, classGroup, dateOfBirth, belt } = body
 
     if (!name || !email || !password || !role) {
       return NextResponse.json({ message: "Semua kolom wajib diisi" }, { status: 400 })
@@ -37,20 +37,42 @@ export async function POST(req: NextRequest) {
     
     // Transaksi jika role ATHLETE
     if (role === Role.ATHLETE) {
-      if (!weightClass || !age) {
-         return NextResponse.json({ message: "Kelas berat dan umur wajib diisi untuk atlet" }, { status: 400 })
+      if (!weightClass || !dateOfBirth) {
+         return NextResponse.json({ message: "Kelas berat dan tanggal lahir wajib diisi untuk atlet" }, { status: 400 })
       }
       
+      // Hitung Umur dari Tanggal Lahir
+      const dob = new Date(dateOfBirth)
+      
+      if (isNaN(dob.getTime())) {
+        return NextResponse.json({ message: "Format tanggal lahir tidak valid. Harap isi dengan lengkap (termasuk tahun)." }, { status: 400 })
+      }
+
+      const today = new Date()
+      let calculatedAge = today.getFullYear() - dob.getFullYear()
+      
+      // Validasi tahun lahir agar masuk akal
+      if (dob.getFullYear() < 1900 || dob.getFullYear() > today.getFullYear()) {
+        return NextResponse.json({ message: "Tahun kelahiran tidak valid. Harap masukkan tahun yang benar." }, { status: 400 })
+      }
+
+      const m = today.getMonth() - dob.getMonth()
+      if (m < 0 || (m === 0 && today.getDate() < dob.getDate())) {
+          calculatedAge--
+      }
+
       // Buat profile Athlete sekaligus User
       createdUser = await prisma.$transaction(async (tx) => {
         const athlete = await tx.athlete.create({
           data: {
             name,
-            age: parseInt(age),
+            age: calculatedAge,
+            dateOfBirth: dob,
             weightClass,
             classGroup: classGroup || "Reguler",
-            overallRating: 50, // Default awal
-            status: "Pending",
+            belt: belt || "Putih",
+            overallRating: 65, // Default awal 65 (Active)
+            status: "Active",
           }
         })
 

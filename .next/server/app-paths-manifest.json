@@ -1,8 +1,5 @@
 {
-  "/api/attendance/route": "app/api/attendance/route.js",
+  "/(dashboard)/athletes/page": "app/(dashboard)/athletes/page.js",
   "/(dashboard)/athletes/[id]/page": "app/(dashboard)/athletes/[id]/page.js",
-  "/(dashboard)/attendance/page": "app/(dashboard)/attendance/page.js",
-  "/(dashboard)/approvals/page": "app/(dashboard)/approvals/page.js",
-  "/(dashboard)/page": "app/(dashboard)/page.js",
-  "/(dashboard)/training-logs/page": "app/(dashboard)/training-logs/page.js"
+  "/(dashboard)/page": "app/(dashboard)/page.js"
 }

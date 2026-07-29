@@ -26,6 +26,10 @@ export default function SidebarNav({ role }: { role: string }) {
             <LayoutDashboard className="w-5 h-5" />
             <span className="font-medium">Overview</span>
           </Link>
+          <Link href="/athletes" className={linkClass("/athletes")}>
+            <Users className="w-5 h-5" />
+            <span className="font-medium">Athletes</span>
+          </Link>
           <Link href="/approvals" className={linkClass("/approvals")}>
             <ShieldCheck className="w-5 h-5" />
             <span className="font-medium">Approvals</span>

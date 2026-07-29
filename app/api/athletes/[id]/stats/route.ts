@@ -35,9 +35,14 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
     // Also update Overall Rating dynamically based on Radar Attributes average
     const overallRating = Math.round((power + speed + stamina + agility + technique + defense) / 6)
     
+    let newStatus = "Injured";
+    if (overallRating >= 80) newStatus = "Prime";
+    else if (overallRating >= 60) newStatus = "Active";
+    else if (overallRating >= 40) newStatus = "Resting";
+    
     await prisma.athlete.update({
       where: { id: athleteId },
-      data: { overallRating }
+      data: { overallRating, status: newStatus }
     })
 
     return NextResponse.json({ message: "Stats updated successfully!" })

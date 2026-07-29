@@ -48,3 +48,39 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ message: "Terjadi kesalahan server" }, { status: 500 })
   }
 }
+
+export async function DELETE(req: NextRequest) {
+  const session = await getServerSession(authOptions)
+  
+  if (!session || (session.user as any).role !== "ADMIN") {
+    return NextResponse.json({ message: "Unauthorized" }, { status: 403 })
+  }
+
+  try {
+    const { userId } = await req.json()
+
+    const user = await prisma.user.findUnique({
+      where: { id: userId }
+    })
+
+    if (!user) {
+      return NextResponse.json({ message: "User not found" }, { status: 404 })
+    }
+
+    // Hapus akun user
+    await prisma.user.delete({
+      where: { id: userId }
+    })
+
+    // Hapus profil atlet yang nganggur
+    if (user.athleteId) {
+      await prisma.athlete.delete({
+        where: { id: user.athleteId }
+      })
+    }
+
+    return NextResponse.json({ message: "Pendaftaran berhasil ditolak dan dihapus" })
+  } catch (error) {
+    return NextResponse.json({ message: "Terjadi kesalahan server" }, { status: 500 })
+  }
+}

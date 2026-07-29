@@ -12,9 +12,15 @@ export default function RegisterPage() {
   const [password, setPassword] = useState("")
   const [role, setRole] = useState("ATHLETE")
   const [secretCode, setSecretCode] = useState("")
-  const [age, setAge] = useState("")
+  
+  // Date of Birth fields
+  const [dobDay, setDobDay] = useState("")
+  const [dobMonth, setDobMonth] = useState("")
+  const [dobYear, setDobYear] = useState("")
+  
   const [weightClass, setWeightClass] = useState("")
   const [classGroup, setClassGroup] = useState("Reguler")
+  const [belt, setBelt] = useState("Putih")
   const [error, setError] = useState("")
   const [success, setSuccess] = useState("")
   const [loading, setLoading] = useState(false)
@@ -26,13 +32,15 @@ export default function RegisterPage() {
     setSuccess("")
 
     try {
+      const dateOfBirth = role === "ATHLETE" ? `${dobYear}-${dobMonth.padStart(2, '0')}-${dobDay.padStart(2, '0')}` : undefined;
+
       const payload = {
         name,
         email,
         password,
         role,
         ...(role === "ADMIN" && { secretCode }),
-        ...(role === "ATHLETE" && { age, weightClass, classGroup })
+        ...(role === "ATHLETE" && { dateOfBirth, weightClass, classGroup, belt })
       }
 
       const res = await fetch("/api/register", {
@@ -126,16 +134,44 @@ export default function RegisterPage() {
             </div>
             
             {role === "ATHLETE" && (
-              <div className="grid grid-cols-3 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-slate-400 mb-2">Umur</label>
-                  <input
-                    type="number"
-                    required
-                    value={age}
-                    onChange={(e) => setAge(e.target.value)}
-                    className="w-full bg-slate-950 border border-slate-800 text-white px-4 py-3 rounded-xl focus:outline-none focus:border-emerald-500"
-                  />
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="md:col-span-2">
+                  <label className="block text-sm font-medium text-slate-400 mb-2">Tgl. Lahir</label>
+                  <div className="flex gap-2">
+                    <select
+                      required
+                      value={dobDay}
+                      onChange={(e) => setDobDay(e.target.value)}
+                      className="w-1/3 bg-slate-950 border border-slate-800 text-white px-3 py-3 rounded-xl focus:outline-none focus:border-emerald-500"
+                    >
+                      <option value="">Tgl</option>
+                      {Array.from({length: 31}, (_, i) => i + 1).map(d => (
+                        <option key={d} value={d.toString()}>{d}</option>
+                      ))}
+                    </select>
+                    <select
+                      required
+                      value={dobMonth}
+                      onChange={(e) => setDobMonth(e.target.value)}
+                      className="w-1/3 bg-slate-950 border border-slate-800 text-white px-3 py-3 rounded-xl focus:outline-none focus:border-emerald-500"
+                    >
+                      <option value="">Bulan</option>
+                      {["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"].map((m, i) => (
+                        <option key={m} value={(i + 1).toString()}>{m}</option>
+                      ))}
+                    </select>
+                    <select
+                      required
+                      value={dobYear}
+                      onChange={(e) => setDobYear(e.target.value)}
+                      className="w-1/3 bg-slate-950 border border-slate-800 text-white px-3 py-3 rounded-xl focus:outline-none focus:border-emerald-500"
+                    >
+                      <option value="">Tahun</option>
+                      {Array.from({length: 50}, (_, i) => new Date().getFullYear() - 5 - i).map(y => (
+                        <option key={y} value={y.toString()}>{y}</option>
+                      ))}
+                    </select>
+                  </div>
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-slate-400 mb-2">Kelas Berat</label>
@@ -162,6 +198,26 @@ export default function RegisterPage() {
                   >
                     <option value="Reguler">Reguler</option>
                     <option value="Prestasi">Prestasi</option>
+                  </select>
+                </div>
+                <div className="md:col-span-2">
+                  <label className="block text-sm font-medium text-slate-400 mb-2">Sabuk Taekwondo</label>
+                  <select
+                    required
+                    value={belt}
+                    onChange={(e) => setBelt(e.target.value)}
+                    className="w-full bg-slate-950 border border-slate-800 text-white px-4 py-3 rounded-xl focus:outline-none focus:border-emerald-500"
+                  >
+                    <option value="Putih">Putih (Geup 10)</option>
+                    <option value="Kuning">Kuning (Geup 9)</option>
+                    <option value="Kuning Strip">Kuning Strip Hijau (Geup 8)</option>
+                    <option value="Hijau">Hijau (Geup 7)</option>
+                    <option value="Hijau Strip">Hijau Strip Biru (Geup 6)</option>
+                    <option value="Biru">Biru (Geup 5)</option>
+                    <option value="Biru Strip">Biru Strip Merah (Geup 4)</option>
+                    <option value="Merah">Merah (Geup 3)</option>
+                    <option value="Merah Strip">Merah Strip Hitam (Geup 2 / Geup 1)</option>
+                    <option value="Hitam">Hitam (DAN)</option>
                   </select>
                 </div>
               </div>
