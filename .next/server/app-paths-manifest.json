@@ -1,23 +1,6 @@
 {
-  "/_not-found/page": "app/_not-found/page.js",
-  "/(auth)/login/page": "app/(auth)/login/page.js",
-  "/(auth)/register/page": "app/(auth)/register/page.js",
-  "/api/athletes/[id]/route": "app/api/athletes/[id]/route.js",
-  "/api/approvals/route": "app/api/approvals/route.js",
-  "/api/athletes/[id]/stats/route": "app/api/athletes/[id]/stats/route.js",
-  "/api/attendance/route": "app/api/attendance/route.js",
-  "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
-  "/api/missions/complete/route": "app/api/missions/complete/route.js",
-  "/api/missions/route": "app/api/missions/route.js",
-  "/api/training-logs/[id]/route": "app/api/training-logs/[id]/route.js",
-  "/api/training-logs/route": "app/api/training-logs/route.js",
-  "/api/register/route": "app/api/register/route.js",
-  "/api/athletes/route": "app/api/athletes/route.js",
+  "/(dashboard)/page": "app/(dashboard)/page.js",
   "/(dashboard)/approvals/page": "app/(dashboard)/approvals/page.js",
   "/(dashboard)/athletes/page": "app/(dashboard)/athletes/page.js",
-  "/(dashboard)/training-logs/page": "app/(dashboard)/training-logs/page.js",
-  "/(dashboard)/page": "app/(dashboard)/page.js",
-  "/(dashboard)/athletes/[id]/page": "app/(dashboard)/athletes/[id]/page.js",
-  "/(dashboard)/attendance/page": "app/(dashboard)/attendance/page.js",
-  "/(dashboard)/missions/page": "app/(dashboard)/missions/page.js"
+  "/(dashboard)/athletes/[id]/page": "app/(dashboard)/athletes/[id]/page.js"
 }

@@ -8,7 +8,7 @@ const ADMIN_SECRET = "COACHRIZAL2026"
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json()
-    const { name, email, password, role, secretCode, weightClass, classGroup, dateOfBirth, belt } = body
+    const { name, email, password, role, secretCode, weightClass, classGroup, gender, dateOfBirth, belt } = body
 
     if (!name || !email || !password || !role) {
       return NextResponse.json({ message: "Semua kolom wajib diisi" }, { status: 400 })
@@ -70,8 +70,9 @@ export async function POST(req: NextRequest) {
             dateOfBirth: dob,
             weightClass,
             classGroup: classGroup || "Reguler",
+            gender: gender || "Laki-laki",
             belt: belt || "Putih",
-            overallRating: 65, // Default awal 65 (Active)
+            overallRating: 0,
             status: "Active",
           }
         })

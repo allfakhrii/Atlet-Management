@@ -3,7 +3,8 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X, LayoutDashboard, Users, Activity, Target } from "lucide-react";
+import { Menu, X, LayoutDashboard, Users, Activity, Target, ShieldCheck, ClipboardList, Trophy } from "lucide-react";
+import LogoutButton from "../auth/LogoutButton";
 
 export default function MobileNav({ role }: { role: string }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -13,7 +14,10 @@ export default function MobileNav({ role }: { role: string }) {
     ? [
         { name: "Command Center", href: "/", icon: LayoutDashboard },
         { name: "Athlete Directory", href: "/athletes", icon: Users },
-        { name: "Training Logs", href: "/logs", icon: Activity },
+        { name: "Approvals", href: "/approvals", icon: ShieldCheck },
+        { name: "Attendance", href: "/attendance", icon: ClipboardList },
+        { name: "Tournaments", href: "/tournaments", icon: Trophy },
+        { name: "Training Logs", href: "/training-logs", icon: Activity },
       ]
     : [
         { name: "My Profile", href: "/", icon: LayoutDashboard },
@@ -62,6 +66,10 @@ export default function MobileNav({ role }: { role: string }) {
                   </Link>
                 );
               })}
+            </div>
+
+            <div className="mt-auto border-t border-slate-800 pt-4">
+              <LogoutButton />
             </div>
           </div>
         </div>

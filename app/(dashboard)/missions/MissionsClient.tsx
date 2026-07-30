@@ -3,7 +3,7 @@
 import { useState } from "react"
 import { Target, CheckCircle2, Circle, Clock, Plus, PenSquare } from "lucide-react"
 
-export default function MissionsClient({ role, initialData }: { role: string, initialData: any[] }) {
+export default function MissionsClient({ role, initialData, tournaments = [] }: { role: string, initialData: any[], tournaments?: any[] }) {
   const [data, setData] = useState(initialData)
   
   // Admin Form State
@@ -11,6 +11,7 @@ export default function MissionsClient({ role, initialData }: { role: string, in
   const [title, setTitle] = useState("")
   const [description, setDescription] = useState("")
   const [targetDate, setTargetDate] = useState("")
+  const [targetAudience, setTargetAudience] = useState("ALL")
   const [creating, setCreating] = useState(false)
 
   // Athlete Proof Modal State
@@ -25,13 +26,15 @@ export default function MissionsClient({ role, initialData }: { role: string, in
       const res = await fetch("/api/missions", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ title, description, targetDate })
+        body: JSON.stringify({ title, description, targetDate, targetAudience })
       })
       if (res.ok) {
-        alert("Misi berhasil dikirim ke semua atlet!")
+        const data = await res.json()
+        alert(data.message)
         window.location.reload()
       } else {
-        alert("Gagal membuat misi.")
+        const error = await res.json()
+        alert(error.message || "Gagal membuat misi.")
       }
     } catch (err) {
       console.error(err)
@@ -98,6 +101,17 @@ export default function MissionsClient({ role, initialData }: { role: string, in
               <div>
                 <label className="block text-sm font-medium text-slate-400 mb-2">Batas Waktu (Target Date)</label>
                 <input required value={targetDate} onChange={e => setTargetDate(e.target.value)} type="date" className="w-full bg-slate-950 border border-slate-800 text-white px-4 py-3 rounded-xl focus:border-cyan-500" />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-slate-400 mb-2">Target Atlet</label>
+                <select value={targetAudience} onChange={e => setTargetAudience(e.target.value)} className="w-full bg-slate-950 border border-slate-800 text-white px-4 py-3 rounded-xl focus:border-cyan-500 appearance-none">
+                  <option value="ALL">Semua Atlet Aktif</option>
+                  <option value="CLASS_REGULER">Kelas Reguler</option>
+                  <option value="CLASS_PRESTASI">Kelas Prestasi</option>
+                  {tournaments.map(t => (
+                    <option key={t.id} value={`TOURNAMENT_${t.id}`}>Turnamen: {t.name}</option>
+                  ))}
+                </select>
               </div>
               <div className="flex justify-end pt-4">
                 <button type="submit" disabled={creating} className="bg-emerald-500 hover:bg-emerald-400 text-slate-950 px-6 py-3 rounded-xl font-bold transition-colors disabled:opacity-50">

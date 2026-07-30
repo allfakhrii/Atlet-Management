@@ -18,6 +18,22 @@ export default async function AthletePage({ params }: { params: { id: string } }
       combatStats: true,
       physicalMetrics: {
         orderBy: { createdAt: 'asc' }
+      },
+      matches: {
+        include: {
+          tournament: true
+        },
+        orderBy: {
+          date: 'desc'
+        }
+      },
+      tournamentParticipations: {
+        include: {
+          tournament: true
+        },
+        orderBy: {
+          registeredAt: 'desc'
+        }
       }
     }
   })

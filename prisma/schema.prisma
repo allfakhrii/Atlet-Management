@@ -32,6 +32,7 @@ model Athlete {
   dateOfBirth   DateTime?
   weightClass   String
   classGroup    String   @default("Reguler")
+  gender        String   @default("Laki-laki")
   belt          String   @default("Putih")
   overallRating Int
   status        String
@@ -42,7 +43,9 @@ model Athlete {
   radarAttributes RadarAttribute?
   user            User?
   missions        MissionProgress[]
-  attendances     Attendance[]
+  attendances              Attendance[]
+  matches                  Match[]
+  tournamentParticipations TournamentParticipant[]
 
   @@map("athletes")
 }
@@ -127,4 +130,49 @@ model Attendance {
   
   @@unique([athleteId, date])
   @@map("attendance")
+}
+
+model Tournament {
+  id          String   @id @default(uuid())
+  name        String
+  date        DateTime
+  location    String?
+  description String?
+  createdAt   DateTime @default(now())
+
+  matches      Match[]
+  participants TournamentParticipant[]
+
+  @@map("tournaments")
+}
+
+model Match {
+  id           String   @id @default(uuid())
+  tournamentId String
+  athleteId    String
+  opponentName String
+  round        String?
+  result       String
+  score        String?
+  notes        String?  @db.Text
+  date         DateTime @default(now())
+
+  tournament   Tournament @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
+  athlete      Athlete    @relation(fields: [athleteId], references: [id], onDelete: Cascade)
+
+  @@map("matches")
+}
+
+model TournamentParticipant {
+  id           String   @id @default(uuid())
+  tournamentId String
+  athleteId    String
+  medal        String?
+  registeredAt DateTime @default(now())
+
+  tournament   Tournament @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
+  athlete      Athlete    @relation(fields: [athleteId], references: [id], onDelete: Cascade)
+
+  @@unique([tournamentId, athleteId])
+  @@map("tournament_participants")
 }

@@ -5,7 +5,7 @@ import {
   Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer,
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, Legend
 } from 'recharts';
-import { Settings2, X, Download, Users as UsersIcon, Loader2 } from 'lucide-react';
+import { Settings2, X, Download, Users as UsersIcon, Loader2, Swords, Trophy, Medal, Calendar } from 'lucide-react';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import BeltIcon from './BeltIcon';
@@ -157,6 +157,12 @@ export default function AthleteProfile({ data, role }: { data?: any, role?: stri
     fouls: stats.fouls
   };
 
+  const medals = {
+    gold: data?.tournamentParticipations?.filter((p: any) => p.medal === 'Emas').length || 0,
+    silver: data?.tournamentParticipations?.filter((p: any) => p.medal === 'Perak').length || 0,
+    bronze: data?.tournamentParticipations?.filter((p: any) => p.medal === 'Perunggu').length || 0,
+  };
+
   return (
     <div className="w-full">
       {/* Edit Modal for Admin */}
@@ -270,7 +276,7 @@ export default function AthleteProfile({ data, role }: { data?: any, role?: stri
             </div>
             <div>
               <h1 className="text-3xl font-extrabold tracking-tight text-white mb-1">{athleteData.name}</h1>
-              <p className="text-slate-400 font-medium">{athleteData.weightClass} • {athleteData.age} Years Old</p>
+              <p className="text-slate-400 font-medium">{athleteData.weightClass} • {athleteData.gender || 'Laki-laki'} • {athleteData.age} Years Old</p>
               <div className="mt-3 flex flex-wrap items-center gap-2 justify-center md:justify-start">
                 <div className="inline-flex items-center px-3 py-1 rounded-full text-sm font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
                   <span className="w-2 h-2 rounded-full bg-emerald-500 mr-2 animate-pulse"></span>
@@ -305,6 +311,37 @@ export default function AthleteProfile({ data, role }: { data?: any, role?: stri
               <UsersIcon className="w-4 h-4" />
               {opponentData ? "Change Opponent" : "Compare Data"}
             </button>
+          </div>
+        </div>
+
+        {/* 1.5. Medal Summary */}
+        <div className="grid grid-cols-3 gap-4 mb-8">
+          <div className="bg-slate-800/80 border border-slate-700/50 rounded-2xl p-4 flex items-center justify-between shadow-lg">
+            <div>
+              <p className="text-slate-400 font-semibold text-sm">Gold</p>
+              <p className="text-3xl font-black text-white mt-1">{medals.gold}</p>
+            </div>
+            <div className="w-12 h-12 rounded-full bg-yellow-500/10 flex items-center justify-center border border-yellow-500/20">
+              <span className="text-2xl">🥇</span>
+            </div>
+          </div>
+          <div className="bg-slate-800/80 border border-slate-700/50 rounded-2xl p-4 flex items-center justify-between shadow-lg">
+            <div>
+              <p className="text-slate-400 font-semibold text-sm">Silver</p>
+              <p className="text-3xl font-black text-white mt-1">{medals.silver}</p>
+            </div>
+            <div className="w-12 h-12 rounded-full bg-slate-300/10 flex items-center justify-center border border-slate-300/20">
+              <span className="text-2xl">🥈</span>
+            </div>
+          </div>
+          <div className="bg-slate-800/80 border border-slate-700/50 rounded-2xl p-4 flex items-center justify-between shadow-lg">
+            <div>
+              <p className="text-slate-400 font-semibold text-sm">Bronze</p>
+              <p className="text-3xl font-black text-white mt-1">{medals.bronze}</p>
+            </div>
+            <div className="w-12 h-12 rounded-full bg-amber-700/10 flex items-center justify-center border border-amber-700/30">
+              <span className="text-2xl">🥉</span>
+            </div>
           </div>
         </div>
 
@@ -443,6 +480,116 @@ export default function AthleteProfile({ data, role }: { data?: any, role?: stri
               </div>
             </div>
           </div>
+        </div>
+
+        {/* 3. Tournament History & Achievements */}
+        <div className="mt-8 bg-slate-800 p-6 rounded-2xl shadow-lg border border-slate-700/60">
+          <h2 className="text-xl font-bold text-slate-100 flex items-center gap-2 mb-6">
+            <Trophy className="w-6 h-6 text-amber-500" />
+            Tournament History & Achievements
+          </h2>
+
+          {(!data?.tournamentParticipations || data.tournamentParticipations.length === 0) ? (
+            <div className="py-8 text-center bg-slate-900/50 rounded-xl border border-slate-700/30">
+              <p className="text-slate-500">Belum ada riwayat turnamen yang diikuti.</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {data.tournamentParticipations.map((part: any) => (
+                <div key={part.id} className="bg-slate-900/80 border border-slate-700/50 rounded-xl p-5 hover:border-amber-500/30 transition-colors flex flex-col justify-between">
+                  <div>
+                    <h3 className="font-bold text-white text-lg leading-tight mb-2">
+                      {part.tournament?.name || 'Unknown Tournament'}
+                    </h3>
+                    <div className="flex items-center gap-2 text-xs font-medium text-slate-400 mb-4">
+                      <Calendar className="w-4 h-4 text-cyan-500" />
+                      <span>{part.tournament?.date ? new Intl.DateTimeFormat('id-ID', { dateStyle: 'long' }).format(new Date(part.tournament.date)) : '-'}</span>
+                    </div>
+                  </div>
+                  
+                  <div className="pt-3 border-t border-slate-800 mt-auto flex items-center gap-2">
+                    <Medal className={`w-5 h-5 ${
+                      part.medal === 'Emas' ? 'text-yellow-500' :
+                      part.medal === 'Perak' ? 'text-slate-300' :
+                      part.medal === 'Perunggu' ? 'text-amber-600' :
+                      'text-slate-600'
+                    }`} />
+                    <span className={`font-bold text-sm ${
+                      part.medal === 'Emas' ? 'text-yellow-500' :
+                      part.medal === 'Perak' ? 'text-slate-300' :
+                      part.medal === 'Perunggu' ? 'text-amber-600' :
+                      'text-slate-500'
+                    }`}>
+                      {part.medal ? `Juara - Medali ${part.medal}` : 'Participant'}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* 4. Match History */}
+        <div className="mt-8 bg-slate-800 p-6 rounded-2xl shadow-lg border border-slate-700/60">
+          <h2 className="text-xl font-bold text-slate-100 flex items-center gap-2 mb-6">
+            <Swords className="w-6 h-6 text-cyan-500" />
+            Match History
+          </h2>
+
+          {(!data?.matches || data.matches.length === 0) ? (
+            <div className="py-8 text-center bg-slate-900/50 rounded-xl border border-slate-700/30">
+              <p className="text-slate-500">Belum ada data pertandingan.</p>
+            </div>
+          ) : (
+            <div className="space-y-4">
+              {data.matches.map((match: any) => (
+                <div key={match.id} className="bg-slate-900/80 border border-slate-700/50 rounded-xl p-5 hover:border-cyan-500/30 transition-colors">
+                  <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-3">
+                    <div className="flex items-center gap-3">
+                      <span className={`px-3 py-1 rounded-full text-xs font-bold ${
+                        match.result === 'Win' 
+                          ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' 
+                          : 'bg-rose-500/10 text-rose-400 border border-rose-500/20'
+                      }`}>
+                        {match.result}
+                      </span>
+                      <span className="font-bold text-white text-lg flex items-center gap-2">
+                        vs {match.opponentName}
+                      </span>
+                    </div>
+                    {match.score && (
+                      <div className="bg-slate-800 px-3 py-1 rounded-lg border border-slate-700 text-sm font-bold text-cyan-400">
+                        {match.score}
+                      </div>
+                    )}
+                  </div>
+                  
+                  <div className="flex flex-wrap items-center gap-4 text-xs font-medium text-slate-400 mb-3">
+                    <div className="flex items-center gap-1.5">
+                      <Trophy className="w-4 h-4 text-amber-500" />
+                      <span className="text-slate-300">{match.tournament?.name || 'Unknown Tournament'}</span>
+                    </div>
+                    {match.round && (
+                      <div className="flex items-center gap-1.5">
+                        <span className="text-slate-500">•</span>
+                        <span>{match.round}</span>
+                      </div>
+                    )}
+                    <div className="flex items-center gap-1.5">
+                      <span className="text-slate-500">•</span>
+                      <span>{new Intl.DateTimeFormat('id-ID', { dateStyle: 'medium' }).format(new Date(match.date))}</span>
+                    </div>
+                  </div>
+
+                  {match.notes && (
+                    <div className="bg-slate-800/50 rounded-lg p-3 border border-slate-700/50 text-sm text-slate-300 italic">
+                      "{match.notes}"
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>

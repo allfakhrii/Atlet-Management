@@ -11,9 +11,39 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const { title, description, targetDate } = await req.json()
+    const { title, description, targetDate, targetAudience } = await req.json()
 
-    // 1. Buat misi baru
+    // 1. Ambil target atlet sesuai audience
+    let activeAthletes = []
+    
+    if (targetAudience === "ALL") {
+      activeAthletes = await prisma.athlete.findMany({
+        where: { status: "Active" }
+      })
+    } else if (targetAudience === "CLASS_REGULER") {
+      activeAthletes = await prisma.athlete.findMany({
+        where: { status: "Active", classGroup: "Reguler" }
+      })
+    } else if (targetAudience === "CLASS_PRESTASI") {
+      activeAthletes = await prisma.athlete.findMany({
+        where: { status: "Active", classGroup: "Prestasi" }
+      })
+    } else if (targetAudience?.startsWith("TOURNAMENT_")) {
+      const tournamentId = targetAudience.replace("TOURNAMENT_", "")
+      const participants = await prisma.tournamentParticipant.findMany({
+        where: { tournamentId },
+        include: { athlete: true }
+      })
+      activeAthletes = participants
+        .map(p => p.athlete)
+        .filter(a => a.status === "Active")
+    }
+
+    if (activeAthletes.length === 0) {
+      return NextResponse.json({ message: "Tidak ada atlet aktif yang memenuhi kriteria target." }, { status: 400 })
+    }
+
+    // 2. Buat misi baru
     const newMission = await prisma.mission.create({
       data: {
         title,
@@ -22,24 +52,17 @@ export async function POST(req: NextRequest) {
       }
     })
 
-    // 2. Ambil semua atlet aktif
-    const activeAthletes = await prisma.athlete.findMany({
-      where: { status: "Active" }
+    // 3. Tugaskan misi ini ke atlet terpilih
+    const progressData = activeAthletes.map(athlete => ({
+      missionId: newMission.id,
+      athleteId: athlete.id
+    }))
+
+    await prisma.missionProgress.createMany({
+      data: progressData
     })
 
-    // 3. Tugaskan misi ini ke semua atlet (Broadcast)
-    if (activeAthletes.length > 0) {
-      const progressData = activeAthletes.map(athlete => ({
-        missionId: newMission.id,
-        athleteId: athlete.id
-      }))
-
-      await prisma.missionProgress.createMany({
-        data: progressData
-      })
-    }
-
-    return NextResponse.json({ message: "Misi berhasil di-broadcast ke semua atlet!" }, { status: 201 })
+    return NextResponse.json({ message: `Misi berhasil ditugaskan ke ${activeAthletes.length} atlet!` }, { status: 201 })
   } catch (error) {
     console.error(error)
     return NextResponse.json({ message: "Gagal membuat misi" }, { status: 500 })

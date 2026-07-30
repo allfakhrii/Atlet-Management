@@ -10,22 +10,15 @@
       "page": "/",
       "matchers": [
         {
-          "regexp": "^(?:\\/(_next\\/data\\/[^/]{1,}))?(?:\\/(\\/?index|\\/?index\\.json))?[\\/#\\?]?$",
-          "originalSource": "/"
-        },
-        {
-          "regexp": "^(?:\\/(_next\\/data\\/[^/]{1,}))?\\/athletes(?:\\/((?:[^\\/#\\?]+?)(?:\\/(?:[^\\/#\\?]+?))*))?(.json)?[\\/#\\?]?$",
-          "originalSource": "/athletes/:path*"
+          "regexp": "^/.*$",
+          "originalSource": "/:path*"
         }
       ],
       "wasm": [],
       "assets": [],
       "env": {
-        "__NEXT_BUILD_ID": "aLyYYSe6rIH0zAwXhR08n",
-        "NEXT_SERVER_ACTIONS_ENCRYPTION_KEY": "spmiW6QbRZF2s6LGhMW40q3Mrwc373I5rENmNN/0b3I=",
-        "__NEXT_PREVIEW_MODE_ID": "67f7134821edd01ec609b6492df83e9e",
-        "__NEXT_PREVIEW_MODE_ENCRYPTION_KEY": "900b3da55c20f7abdd146383916193d66da50b93332b33efdc85f726f766b4d2",
-        "__NEXT_PREVIEW_MODE_SIGNING_KEY": "6db732599bcd9fa2fbd1af4276fd21c14f41f3d538c165ac5dc600607d1d199b"
+        "__NEXT_BUILD_ID": "development",
+        "NEXT_SERVER_ACTIONS_ENCRYPTION_KEY": "4uGZpVxwM0BiVxjv8zfozDpJH9+hzQw9HaiJFH+jxM8="
       }
     }
   },

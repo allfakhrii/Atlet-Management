@@ -16,6 +16,8 @@ export default async function MissionsPage() {
   
   let missionsData: any = []
 
+  let tournaments: any[] = []
+
   if (role === "ADMIN") {
     // Admin melihat semua misi dan progres setiap atlet
     missionsData = await prisma.mission.findMany({
@@ -25,6 +27,11 @@ export default async function MissionsPage() {
           include: { athlete: true }
         }
       }
+    })
+    
+    tournaments = await prisma.tournament.findMany({
+      orderBy: { createdAt: "desc" },
+      select: { id: true, name: true }
     })
   } else {
     // Atlet hanya melihat misi yang ditugaskan kepada mereka
@@ -48,7 +55,7 @@ export default async function MissionsPage() {
         </p>
       </div>
 
-      <MissionsClient role={role} initialData={missionsData} />
+      <MissionsClient role={role} initialData={missionsData} tournaments={tournaments} />
     </div>
   )
 }

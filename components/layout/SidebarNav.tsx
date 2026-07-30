@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { LayoutDashboard, Users, Activity, ShieldCheck, Target, ClipboardList } from 'lucide-react'
+import { LayoutDashboard, Users, Activity, ShieldCheck, Target, ClipboardList, Trophy } from 'lucide-react'
 
 export default function SidebarNav({ role }: { role: string }) {
   const pathname = usePathname()
@@ -37,6 +37,10 @@ export default function SidebarNav({ role }: { role: string }) {
           <Link href="/attendance" className={linkClass("/attendance")}>
             <ClipboardList className="w-5 h-5" />
             <span className="font-medium">Attendance</span>
+          </Link>
+          <Link href="/tournaments" className={linkClass("/tournaments")}>
+            <Trophy className="w-5 h-5" />
+            <span className="font-medium">Tournaments</span>
           </Link>
         </>
       ) : (

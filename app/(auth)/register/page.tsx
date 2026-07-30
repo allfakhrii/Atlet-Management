@@ -20,6 +20,7 @@ export default function RegisterPage() {
   
   const [weightClass, setWeightClass] = useState("")
   const [classGroup, setClassGroup] = useState("Reguler")
+  const [gender, setGender] = useState("Laki-laki")
   const [belt, setBelt] = useState("Putih")
   const [error, setError] = useState("")
   const [success, setSuccess] = useState("")
@@ -40,7 +41,7 @@ export default function RegisterPage() {
         password,
         role,
         ...(role === "ADMIN" && { secretCode }),
-        ...(role === "ATHLETE" && { dateOfBirth, weightClass, classGroup, belt })
+        ...(role === "ATHLETE" && { dateOfBirth, weightClass, classGroup, gender, belt })
       }
 
       const res = await fetch("/api/register", {
@@ -186,6 +187,18 @@ export default function RegisterPage() {
                     <option value="Fly (-58kg)">Fly (-58kg)</option>
                     <option value="Bantam (-63kg)">Bantam (-63kg)</option>
                     <option value="Feather (-68kg)">Feather (-68kg)</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-400 mb-2">Jenis Kelamin</label>
+                  <select
+                    required
+                    value={gender}
+                    onChange={(e) => setGender(e.target.value)}
+                    className="w-full bg-slate-950 border border-slate-800 text-white px-4 py-3 rounded-xl focus:outline-none focus:border-emerald-500"
+                  >
+                    <option value="Laki-laki">Laki-laki</option>
+                    <option value="Perempuan">Perempuan</option>
                   </select>
                 </div>
                 <div>
